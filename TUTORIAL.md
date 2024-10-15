@@ -1,9 +1,12 @@
 # Tutorial av gpt.ri.se med korrigeringar och tillägg av Henrik Bygren
 I denna tutorial kommer vi att gå igenom en Node.js-applikation som använder `bcrypt` för lösenordshantering, `jsonwebtoken` för autentisering och `cookie` för att hantera användarsessioner. Vi kommer att förklara varje del av koden och hur dessa bibliotek bidrar till säkerheten i applikationen.
 
-För att följa denna tutorial behöver clona 
+Endast filen router.mjs gås igenom. 
+
+För att följa denna tutorial behöver du clona från
 
    https://github.com/ByHe/docker-nodejs-auth-egytalk
+
 
 ### Konfiguration
 
@@ -34,6 +37,12 @@ docker compose up -d
 
 Öppna phpmyadmin (http://localhost:8080) och importer databasen egytalk. Skapa även användare enligt **.env** filen
 
+### Test
+För att testa
+
+   http://localhost
+
+De filer som är tillgängliga för att testa ligger i katalogen **html**
 
 ### Koden
 
