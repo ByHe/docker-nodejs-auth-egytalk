@@ -15,7 +15,7 @@ const router = express.Router()
  */
 router.post('/users', async function (req, res) {
    const result = { success: false }
-   const salt = 10
+   const cost = 10
 
    // Alternativt: const { firstName, surName, userName, password } = req.body;
    const firstName = req.body.firstName
@@ -24,7 +24,7 @@ router.post('/users', async function (req, res) {
    const password = req.body.password
 
    try {
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await bcrypt.hash(password, cost);
       const connection = await connectToDB();
       const sql = "INSERT INTO user(uid, firstname, surname, username, password) VALUES(UUID(),?,?,?,?)";
       await connection.execute(sql, [firstName, surName, userName, hashedPassword]);
