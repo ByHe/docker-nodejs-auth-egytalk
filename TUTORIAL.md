@@ -281,8 +281,24 @@ export default router
 
 `bcrypt` används för att hasha lösenord innan de sparas i databasen. Detta gör det svårare för en angripare att få tillgång till användarnas lösenord om databasen skulle bli komprometterad.
 
+
 ```javascript
 const hashedPassword = await bcrypt.hash(password, salt);
+```
+
+**Hur fungerar bcrypt?**
+   - **Saltgenerering:** Bcrypt genererar en unik salt för varje lösenord.
+   - **Hashing:** Lösenordet kombineras med saltet och genomgår flera rundor av hashing.
+   - **Resultat:** Den slutliga hashade strängen lagras i databasen tillsammans med saltet.
+
+**Verifiera lösenord**
+
+När en användare loggar in, hashar du det inskrivna lösenordet och jämför det med den lagrade hashade versionen.
+
+Här är **password** det lösenord som skall testas och **result.userInfo.password** det hashade lösenordet från databasen.
+
+```javascript
+if (await bcrypt.compare(password, result.userInfo.password)) 
 ```
 
 ### jsonwebtoken
