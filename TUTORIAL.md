@@ -35,7 +35,13 @@ Gå till root-katalogen och kör
 docker compose up -d
 ```
 
-Öppna phpmyadmin (http://localhost:8080) och importer databasen egytalk. Skapa även användare enligt **.env** filen
+Öppna phpmyadmin (http://localhost:8080) och importer databasen egytalk. Skapa även användare enligt **.env** filen.
+
+Kör följade sql om du har användare i tabellen user som är skapade med PHP.
+
+```sql
+UPDATE user SET password = REPLACE(password, '$2y$', '$2b$') WHERE password LIKE '$2y$%';
+```
 
 ### Test
 För att testa
