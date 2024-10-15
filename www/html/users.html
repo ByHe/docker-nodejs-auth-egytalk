@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Get users</title>
+   <style>
+      li {
+         list-style-type: none;
+      }
+   </style>
+</head>
+<body>
+   
+   <section>
+      <h1>Anvädare</h1>
+      <ul id="userList">
+
+      </ul> 
+   </section>
+</body>
+<script>
+   async function getUsers(){
+      const ul = document.getElementById('userList');
+      const response = await fetch("/api/users");
+
+      const users = await response.json();
+
+      if(!users.success) window.location = "login.html"
+
+      console.log(users)
+
+      for(user of users.userInfo){
+         const li = document.createElement('li');
+         li.innerText = user.firstName + ", " + user.surName;
+         ul.appendChild(li)
+      }
+   }
+
+   getUsers();
+</script>
+</html>

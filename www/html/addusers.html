@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+</head>
+
+<body>
+    <h1>Lägg till användare</h1>
+    <form id="userForm">
+        <label>Förnamn</label><br>
+        <input type="text" name="firstName"><br>
+
+
+        <label>Efternamn</label><br>
+        <input type="text" name="surName"><br>
+
+        <label>Användarnamn</label><br>
+        <input type="text" name="userName"><br>
+
+        <label>Lösen</label><br>
+        <input type="password" name="password"><br>
+
+        <input type="submit" value="Uppdatera">
+    </form>
+
+</body>
+<script>
+    const userForm = document.getElementById('userForm')
+    userForm.addEventListener('submit', addUser)
+
+
+    async function addUser(e) {
+        e.preventDefault() // Stoppar formuläret från att ladda om sidan.
+
+        const formData = new FormData(userForm)
+        const data = new URLSearchParams(formData);
+
+
+        const response = await fetch('/api/users', {
+            method: "POST",
+            body: data
+        })
+
+        let result = { success: false };
+
+        try {
+            result = await response.json()
+        } catch (err) {
+            console.log(err)
+        }
+
+        const msg = result.success ? "Ny användare tillagd" : "Kunde inte lägga till användare"
+        alert(msg)
+        console.log("result: " + result.success)
+    }
+    // Klistra in kod från Create, getUsers()
+</script>
+
+</html>

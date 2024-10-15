@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login User</title>
+</head>
+
+<body>
+    <h1>Login EGY Talk</h1>
+    <form id="loginForm">
+        <label>Användarnamn</label><br>
+        <input type="text" name="userName"><br>
+
+        <label>Lösen</label><br>
+        <input type="password" name="password"><br>
+
+        <input type="submit" value="Loggan In">
+    </form>
+</body>
+<script>
+    const userForm = document.getElementById('loginForm')
+    userForm.addEventListener('submit', loginUser)
+
+
+    async function loginUser(e) {
+        e.preventDefault() // Stoppar formuläret från att ladda om sidan.
+
+        const formData = new FormData(loginForm)
+        const data = new URLSearchParams(formData);
+
+
+        const response = await fetch('/api/auth', {
+            method: "POST",
+            body: data
+        })
+        
+        const result = await response.json()
+
+        if(result.success) window.location = "index.html";
+    }
+    // Klistra in kod från Create, getUsers()
+</script>
+</html>

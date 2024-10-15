@@ -1,0 +1,66 @@
+services:
+
+  web:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./www/html:/var/www/html
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/ssl:/etc/ssl
+
+  server:
+    image: node:latest
+    container_name: server
+    working_dir: /usr/src/server
+    volumes:
+      - ./www/server:/usr/src/server
+      - ./www/server/node_modules:/usr/src/server/node_modules
+    command: npm run dev
+  
+  client:
+    image: node:latest
+    container_name: client
+    working_dir: /www/
+    command: "npm run dev -- --host 0.0.0.0"
+    volumes:
+      - ./www/client:/client
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=pma
+      - MYSQL_PASSWORD=12345
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: pma
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    volumes:
+      - ./mongodb:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 12345
+
