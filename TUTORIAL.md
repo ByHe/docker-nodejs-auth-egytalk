@@ -10,6 +10,8 @@ För att följa denna tutorial behöver du clona från
 
 ### Konfiguration
 
+Gå till katalogen **server** 
+
 Skapa en `.env`-fil i din projektmapp, om den inte redan finns, och lägg till följande miljövariabler:
 
 ```plaintext
@@ -23,7 +25,7 @@ JWT_SECRET='dd92080dcabb323966040285d2a903b5f1bff87107b947454106f92692f431a87787
 ### Förutsättningar
 
 
-gå till katalogen **server** och kör 
+I katalogen **server** kör i terminalen 
 
 ```bash
 npm install 
@@ -67,7 +69,7 @@ const router = express.Router()
 
 /**
  * Middleware för att lägga till en användare i user-tabellen.
- * Endpoint: localhost/api/users
+ * Endpoint: /api/users
  * Method: POST
  */
 router.post('/users', async function (req, res) {
@@ -77,10 +79,10 @@ router.post('/users', async function (req, res) {
    const { firstName, surName, userName, password } = req.body;
 
    try {
-      const hashedPassword = await bcrypt.hash(password, cost);
+      const passwordHash = await bcrypt.hash(password, cost);
       const connection = await connectToDB();
       const sql = "INSERT INTO user(uid, firstname, surname, username, password) VALUES(UUID(),?,?,?,?)";
-      await connection.execute(sql, [firstName, surName, userName, hashedPassword]);
+      await connection.execute(sql, [firstName, surName, userName, passwordHash]);
       connection.end();
       result.success = true;
    } catch (err) {
@@ -93,7 +95,7 @@ router.post('/users', async function (req, res) {
 /**
  * Middleware för att autentisera en användare med användarnamn och lösenord.
  * Om autentisering lyckas skapas en cookie med en JWT och returnerar {success: true}.
- * Endpoint: localhost/api/auth
+ * Endpoint: /api/auth
  * Method: POST
  */
 router.post('/auth', async function (req, res) {
@@ -124,7 +126,7 @@ router.post('/auth', async function (req, res) {
 
 /**
  * Middleware för att logga ut användare.
- * Endpoint: localhost/api/logout
+ * Endpoint: /api/logout
  * Method: POST
  */
 router.post('/logout', function (req, res) {
@@ -143,7 +145,7 @@ router.post('/logout', function (req, res) {
 /**
  * Middleware för att autentisera mot en JWT-cookie.
  * Om autentisering lyckas returneras {success: true}.
- * Endpoint: localhost/api/auth
+ * Endpoint: /api/auth
  * Method: GET
  */
 router.get('/auth', async function (req, res) {
@@ -154,7 +156,7 @@ router.get('/auth', async function (req, res) {
 
 /**
  * Middleware för att returnera alla användare om JWT-cookien kan verifieras.
- * Endpoint: localhost/api/users
+ * Endpoint: /api/users
  * Method: GET
  */
 router.get('/users', async function (req, res) {
@@ -183,7 +185,7 @@ router.get('/users', async function (req, res) {
 
 /**
  * Middleware för att hantera övriga anrop till domän/api.
- * Endpoint: localhost/api/*
+ * Endpoint: /api/*
  * Method: GET
  */
 router.get('/*', function (req, res) {
