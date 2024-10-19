@@ -285,12 +285,12 @@ export default router
 
 
 ```javascript
-const hashedPassword = await bcrypt.hash(password, salt);
+const passwordHash = await bcrypt.hash(password, cost);
 ```
 
 **Hur fungerar bcrypt?**
    - **Saltgenerering:** Bcrypt genererar en unik salt för varje lösenord.
-   - **Hashing:** Lösenordet kombineras med saltet och genomgår flera rundor av hashing.
+   - **Hashing:** Lösenordet kombineras med saltet och genomgår flera rundor (==cost==) av hashing.
    - **Resultat:** Den slutliga hashade strängen lagras i databasen tillsammans med saltet.
 
 **Verifiera lösenord**
